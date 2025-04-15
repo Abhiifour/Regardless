@@ -24,13 +24,18 @@ jobs:
           port: 22
           script: |
             ls
-            # cd Regardless
-            # git pull origin main
-            # npm i
-            # npx prisma generate
-            # npx prisma migrate dev
-            # npx tsc -b
-            # node dist/index.js
+            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            node -v
+            npm -v
+            npx --version
+            cd Regardless
+            git pull origin main
+            npm i
+            npx prisma generate
+            npx prisma migrate dev
+            npx tsc -b
+            node dist/index.js
 
 
       # - name: Setup Node.js
