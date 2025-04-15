@@ -11,6 +11,8 @@ import { Request, Response } from "express";
 
 // connectRedis()
 
+
+
 export const createJob = async (req: Request , res:Response):Promise<any> => {
     const {title, description, postedOn , appliedOn , createdBy} = req.body;
 
