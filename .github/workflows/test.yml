@@ -15,6 +15,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - run: echo "hello, ci/cd"
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 172-31-43-238
+          username: ubuntu
+          key: ${{ secrets.PRIVATE_SSH_KEY }}
+          port: 22
+          script: whoami
 
       # - name: Setup Node.js
       #   uses: actions/setup-node@v4

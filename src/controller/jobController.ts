@@ -1,15 +1,15 @@
 import prisma from "../utils";
 import { Request, Response } from "express";
-import { createClient } from "redis";
+// import { createClient } from "redis";
 
-const client = createClient()
+// const client = createClient()
 
-async function connectRedis(){
-    client.on('error', (err) => console.log('Redis Client Error', err));
-    await client.connect()
-}
+// async function connectRedis(){
+//     client.on('error', (err) => console.log('Redis Client Error', err));
+//     await client.connect()
+// }
 
-connectRedis()
+// connectRedis()
 
 export const createJob = async (req: Request , res:Response):Promise<any> => {
     const {title, description, postedOn , appliedOn , createdBy} = req.body;
@@ -46,23 +46,23 @@ export const createJob = async (req: Request , res:Response):Promise<any> => {
 
 export const getJob = async (req:Request, res:Response):Promise<any> =>{
     const {id} = req.params
-    const chachedJob = await client.get('jobs')
-    if(chachedJob){
-        return res.json({
-            message:"job found in chache",
-            chachedJob:JSON.parse(chachedJob)
-        })
-    }
+    // const chachedJob = await client.get('jobs')
+    // if(chachedJob){
+    //     return res.json({
+    //         message:"job found in chache",
+    //         chachedJob:JSON.parse(chachedJob)
+    //     })
+    // }
     const jobs = await prisma.job.findMany({
         where:{
             createdBy:id
         }
     })
     if(jobs){
-        await client.set('jobs', JSON.stringify(jobs), {
-            EX: 60, // 1 minute in seconds
-            NX: true // Only set the key if it does not already exist
-        })
+        // await client.set('jobs', JSON.stringify(jobs), {
+        //     EX: 60, // 1 minute in seconds
+        //     NX: true // Only set the key if it does not already exist
+        // })
         return res.json({
             message:"job found",
             jobs:jobs
