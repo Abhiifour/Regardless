@@ -1,0 +1,28 @@
+name: test workflows
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - run: echo "hello, ci/cd"
+
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '18' # or your preferred version
+
+      # - name: Install dependencies
+      #   run: npm ci
+
+      # - name: Run tests
+      #   run: npm test
