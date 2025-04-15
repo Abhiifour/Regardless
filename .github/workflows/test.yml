@@ -23,7 +23,14 @@ jobs:
           key: ${{ secrets.PRIVATE_SSH_KEY }}
           port: 22
           script: |
-            ls
+            cd Regardless
+            git pull origin main
+            npm i
+            npx prisma generate
+            npx prisma migrate dev
+            npx tsc -b
+            node dist/index.js
+            
 
       # - name: Setup Node.js
       #   uses: actions/setup-node@v4
