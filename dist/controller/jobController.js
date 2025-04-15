@@ -14,15 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getJob = exports.createJob = void 0;
 const utils_1 = __importDefault(require("../utils"));
-const redis_1 = require("redis");
-const client = (0, redis_1.createClient)();
-function connectRedis() {
-    return __awaiter(this, void 0, void 0, function* () {
-        client.on('error', (err) => console.log('Redis Client Error', err));
-        yield client.connect();
-    });
-}
-connectRedis();
+// import { createClient } from "redis";
+// const client = createClient()
+// async function connectRedis(){
+//     client.on('error', (err) => console.log('Redis Client Error', err));
+//     await client.connect()
+// }
+// connectRedis()
 const createJob = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, description, postedOn, appliedOn, createdBy } = req.body;
     const job = yield utils_1.default.job.create({
@@ -52,23 +50,23 @@ const createJob = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.createJob = createJob;
 const getJob = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const chachedJob = yield client.get('jobs');
-    if (chachedJob) {
-        return res.json({
-            message: "job found in chache",
-            chachedJob: JSON.parse(chachedJob)
-        });
-    }
+    // const chachedJob = await client.get('jobs')
+    // if(chachedJob){
+    //     return res.json({
+    //         message:"job found in chache",
+    //         chachedJob:JSON.parse(chachedJob)
+    //     })
+    // }
     const jobs = yield utils_1.default.job.findMany({
         where: {
             createdBy: id
         }
     });
     if (jobs) {
-        yield client.set('jobs', JSON.stringify(jobs), {
-            EX: 60, // 1 minute in seconds
-            NX: true // Only set the key if it does not already exist
-        });
+        // await client.set('jobs', JSON.stringify(jobs), {
+        //     EX: 60, // 1 minute in seconds
+        //     NX: true // Only set the key if it does not already exist
+        // })
         return res.json({
             message: "job found",
             jobs: jobs
@@ -79,3 +77,5 @@ const getJob = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     });
 });
 exports.getJob = getJob;
+// Redis - 5ms , hence very fast.
+// normally - 2.3s
